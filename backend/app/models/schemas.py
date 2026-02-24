@@ -6,8 +6,10 @@ from pydantic import BaseModel, Field
 PlanType = Literal["Basic", "Pro", "Enterprise"]
 JobStatus = Literal["pending", "processing", "completed", "failed"]
 
+
 class ScanCreateResponse(BaseModel):
     job_id: str
+
 
 class JobStatusResponse(BaseModel):
     status: JobStatus
@@ -15,28 +17,34 @@ class JobStatusResponse(BaseModel):
     step: str
     message: str
 
+
 class PenaltyRange(BaseModel):
     minimum: float
     maximum: float
     currency: str = "AED"
+
 
 class Driver(BaseModel):
     name: str
     impact: int
     detail: str
 
+
 class Benchmark(BaseModel):
     industry_avg: int
     percentile: int
+
 
 class Recommendation(BaseModel):
     title: str
     owner: str
     due_in_days: int
 
+
 class UpdateItem(BaseModel):
     headline: str
     date: datetime
+
 
 class ResultPayload(BaseModel):
     job_id: str
@@ -54,3 +62,15 @@ class ResultPayload(BaseModel):
     dispute_draft: str | None = None
     action_plan: dict[str, Any] | None = None
     export_enabled: bool = False
+
+
+class PenaltySimulationRequest(BaseModel):
+    plan: PlanType
+    scenario: dict[str, Any]
+
+
+class PenaltySimulationResponse(BaseModel):
+    plan: PlanType
+    scenario: dict[str, Any]
+    estimated_range: PenaltyRange
+    notes: list[str]
