@@ -34,20 +34,14 @@ function AppInner() {
   })
   const [error, setError] = useState<string>('')
 
-  // Detect subscription plan from Supabase user metadata
   useEffect(() => {
-    fetchUserPlan()
-      .then((p) => setPlan(p))
-      .catch(() => {
-        // keep cached plan
-      })
+    fetchUserPlan().then(setPlan).catch(() => {})
   }, [])
 
   useEffect(() => {
     setCachedPlan(plan)
   }, [plan])
 
-  // Poll job status
   useEffect(() => {
     if (!jobId) return
     localStorage.setItem(LS_LAST_JOB, jobId)
@@ -73,7 +67,6 @@ function AppInner() {
           setError(status.message)
         }
       } catch (e) {
-        // Keep polling on transient errors; show message
         setError((e as Error).message)
       }
     }, 700)
