@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Any
 from uuid import uuid4
 
+
 class JobStore:
     def __init__(self) -> None:
         self._jobs: dict[str, dict[str, Any]] = {}
@@ -27,7 +28,8 @@ class JobStore:
             if job_id in self._jobs:
                 self._jobs[job_id].update(updates)
 
-    def get(self, job_id: str):
+    def get(self, job_id: str) -> dict[str, Any] | None:
         return self._jobs.get(job_id)
+
 
 job_store = JobStore()
