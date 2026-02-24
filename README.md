@@ -22,3 +22,45 @@ AI Layer: OpenAI (Hybrid Architecture)
 To become the global regulatory risk intelligence infrastructure layer for SMEs, accounting firms, and regulated enterprises.
 
 Built by practitioners. Designed for regulated industries.
+Monorepo structure:
+- `backend/` FastAPI API
+- `frontend/` React + Vite + Tailwind dashboard
+- `docs/` architecture, roadmap, security
+- `scripts/` helper scripts
+
+## Quick start
+
+### Backend
+```bash
+cd backend
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Docker
+```bash
+docker compose up --build
+```
+
+## Troubleshooting
+- Upload field must be named exactly `file` in multipart form.
+- If CORS errors occur, adjust `CORS_ORIGINS` in `backend/.env`.
+- File size rejected: increase `MAX_UPLOAD_MB`.
+
+## Deployment
+- Backend: Render (FastAPI service)
+- Frontend: Vercel (Vite static app)
+
+## Bundle
+```bash
+./scripts/make_zip.sh
+```
+Creates `regintel_bundle.zip` excluding `node_modules`, `venv`, and `__pycache__`.
