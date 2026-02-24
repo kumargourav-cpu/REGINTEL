@@ -16,12 +16,7 @@ export async function createScan(file: File, jurisdiction: string, companyName: 
   formData.append('company_name', companyName)
   formData.append('plan', plan)
 
-  const res = await fetch(`${API_BASE}/scan`, {
-    method: 'POST',
-    headers: await authHeaders(),
-    body: formData,
-  })
-
+  const res = await fetch(`${API_BASE}/scan`, { method: 'POST', headers: await authHeaders(), body: formData })
   if (!res.ok) throw new Error(`Scan failed: ${await res.text()}`)
   const data = await res.json()
   return data.job_id
