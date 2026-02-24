@@ -1,9 +1,8 @@
 from pathlib import Path
 import threading
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
-from app.core.auth import require_auth
 from app.core.config import settings
 from app.models.schemas import ScanCreateResponse
 from app.services.disputes import build_dispute_draft
@@ -20,10 +19,11 @@ def _process_job(job_id: str, saved_path: Path, jurisdiction: str, company_name:
     try:
         job_store.update(job_id, status="processing", progress=20, step="Parsing", message="Extracting content")
         parsed_text = parse_file(saved_path)
+
         job_store.update(job_id, progress=55, step="Risk Scoring", message="Computing risk model")
         risk_score, drivers = compute_risk_score(parsed_text, plan)
-        job_store.update(job_id, progress=80, step="Generating Insights", message="Preparing recommendations")
 
+        job_store.update(job_id, progress=80, step="Generating Insights", message="Preparing recommendations")
         penalty_estimate = estimate_penalty_range(risk_score)
         update_count = 2 if plan == "Basic" else 3
 
@@ -69,7 +69,6 @@ def _process_job(job_id: str, saved_path: Path, jurisdiction: str, company_name:
 
 @router.post("", response_model=ScanCreateResponse)
 async def create_scan(
-    _user=Depends(require_auth),
     file: UploadFile = File(...),
     jurisdiction: str = Form("UAE"),
     company_name: str = Form("Acme Corp"),
