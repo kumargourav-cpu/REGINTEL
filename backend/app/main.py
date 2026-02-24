@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 
-# ✅ Import routers directly (robust on Render)
 from app.routers.health import router as health_router
 from app.routers.scan import router as scan_router
 from app.routers.jobs import router as jobs_router
@@ -22,6 +21,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/")
+def root() -> dict:
+    return {"name": settings.app_name, "status": "live", "health": f"{settings.api_prefix}/health"}
+
 
 app.include_router(health_router, prefix=settings.api_prefix)
 app.include_router(scan_router, prefix=settings.api_prefix)
