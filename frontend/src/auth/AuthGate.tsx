@@ -28,10 +28,7 @@ export function AuthGate() {
             className="w-full bg-white/10 rounded-xl px-3 py-2 outline-none"
           />
 
-          <button
-            onClick={signIn}
-            className="w-full rounded-xl px-3 py-2 bg-cyan-400/20 hover:bg-cyan-400/30 transition"
-          >
+          <button onClick={signIn} className="w-full rounded-xl px-3 py-2 bg-cyan-400/20 hover:bg-cyan-400/30 transition">
             Send magic link
           </button>
 
