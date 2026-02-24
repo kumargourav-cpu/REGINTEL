@@ -5,7 +5,7 @@ services:
     ports:
       - '8000:8000'
     volumes:
-      - ./storage/uploads:/app/storage/uploads
+      - ./backend/storage/uploads:/app/storage/uploads
   frontend:
     build: ./frontend
     ports:
