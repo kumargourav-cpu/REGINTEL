@@ -1,13 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 
-from app.core.auth import require_auth
 from app.services.job_store import job_store
 
 router = APIRouter(prefix="/results", tags=["results"])
 
 
 @router.get("/{job_id}")
-def get_results(job_id: str, _user=Depends(require_auth)) -> dict:
+def get_results(job_id: str) -> dict:
     job = job_store.get(job_id)
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
