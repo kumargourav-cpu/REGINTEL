@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
-from app.core.auth import require_auth
 from app.models.schemas import PenaltySimulationRequest, PenaltySimulationResponse
 from app.services.penalties import estimate_penalty_range
 
@@ -8,7 +7,7 @@ router = APIRouter(prefix="/penalty", tags=["penalties"])
 
 
 @router.post("/simulate", response_model=PenaltySimulationResponse)
-def simulate_penalty(payload: PenaltySimulationRequest, _user=Depends(require_auth)) -> PenaltySimulationResponse:
+def simulate_penalty(payload: PenaltySimulationRequest) -> PenaltySimulationResponse:
     risk = int(payload.scenario.get("risk_score", 50))
     estimate = estimate_penalty_range(risk)
     return PenaltySimulationResponse(
