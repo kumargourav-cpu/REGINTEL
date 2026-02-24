@@ -1,15 +1,14 @@
 import json
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response
 
-from app.core.auth import require_auth
 from app.services.job_store import job_store
 
 router = APIRouter(prefix="/export", tags=["export"])
 
 
 @router.get("/{job_id}")
-def export_result(job_id: str, _user=Depends(require_auth)) -> Response:
+def export_result(job_id: str) -> Response:
     job = job_store.get(job_id)
     if not job or job["status"] != "completed":
         raise HTTPException(status_code=404, detail="Result not ready")
